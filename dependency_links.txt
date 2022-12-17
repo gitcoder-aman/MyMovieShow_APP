@@ -1,0 +1,17 @@
+//Build My Movie Show APP
+//Github dependency
+
+Material Spinner 
+https://github.com/alimogh/MaterialSpinner
+
+//Retrofit API
+https://github.com/square/retrofit
+
+//Diagonal Layout ImageView
+https://github.com/florent37/DiagonalLayout
+
+//KenBurnsView
+https://github.com/flavioarfaria/KenBurnsView
+
+//Picasso
+https://github.com/square/picasso

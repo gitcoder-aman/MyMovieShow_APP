@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">My Movie Show</string>
+    <string name="enter_title">Enter title...</string>
+    <string name="search">Search</string>
+</resources>
