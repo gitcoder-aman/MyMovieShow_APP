@@ -2,6 +2,7 @@ package com.tech.mymovieshow.Interfaces;
 
 
 import com.tech.mymovieshow.Model.MovieResponse;
+import com.tech.mymovieshow.Model.PersonResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -9,7 +10,7 @@ import retrofit2.http.Query;
 
 public interface RetrofitService {
 
-    //https:api.themoviedb.org/3/  - this is base url .we have already created in client
+    //https://api.themoviedb.org/3/  - this is base url .we have already created in client
 
     //https://api.themoviedb.org/3/search/movie?api_key={YOUR_API_KEY}&query={MOVIE_NAME}   //without curly brackets
 
@@ -29,7 +30,7 @@ public interface RetrofitService {
     //Before that create a model class for person results
 
     @GET("search/person")
-    Call<MovieResponse> getPersonByQuery(@Query("api_key") String api_key, @Query("query") String query);
+    Call<PersonResponse> getPersonByQuery(@Query("api_key") String api_key, @Query("query") String query);
 
 
 

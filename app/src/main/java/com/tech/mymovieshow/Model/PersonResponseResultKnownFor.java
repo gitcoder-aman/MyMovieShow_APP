@@ -99,7 +99,10 @@ public class PersonResponseResultKnownFor {
     }
 
     public String getPoster_path() {
-        return poster_path;
+
+        //create a baseUrl for this poster
+        String baseUrl = "https://image.tmdb.org/t/p/w500";
+        return baseUrl+poster_path;
     }
 
     public void setPoster_path(String poster_path) {

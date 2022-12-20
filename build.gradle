@@ -3,8 +3,8 @@ buildscript {
     ext.kotlin_version = '1.7.20-Beta'
     repositories {
         google()
-//        maven { url 'https://jitpack.io' }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url 'https://jitpack.io' }
+//        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         mavenCentral()
 
     }

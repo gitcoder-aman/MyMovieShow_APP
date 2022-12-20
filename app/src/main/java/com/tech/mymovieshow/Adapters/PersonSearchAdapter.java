@@ -8,18 +8,18 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.tech.mymovieshow.Model.MovieResponseResults;
+import com.tech.mymovieshow.Model.PersonResponseResults;
 import com.tech.mymovieshow.R;
 import com.tech.mymovieshow.ViewHolders.SearchViewHolder;
 
 import java.util.List;
 
-public class MovieSearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
+public class PersonSearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
 
     private Activity activity;
-    private List<MovieResponseResults> results;
+    private List<PersonResponseResults> results;
 
-    public MovieSearchAdapter(Activity activity, List<MovieResponseResults> results) {
+    public PersonSearchAdapter(Activity activity, List<PersonResponseResults> results) {
         this.activity = activity;
         this.results = results;
     }
@@ -35,11 +35,11 @@ public class MovieSearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
 
-        MovieResponseResults responseResults = results.get(position);
+        PersonResponseResults responseResults = results.get(position);
 
-        holder.setPosterImageView(activity,responseResults.getPoster_path());
+        holder.setPosterImageView(activity,responseResults.getProfile_path());
 
-        String title = responseResults.getTitle();
+        String title = responseResults.getName();
         if(title != null){
             holder.posterTitle.setVisibility(View.VISIBLE);
             holder.posterTitle.setText(title);
