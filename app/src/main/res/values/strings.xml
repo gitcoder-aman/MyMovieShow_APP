@@ -2,4 +2,12 @@
     <string name="app_name">My Movie Show</string>
     <string name="enter_title">Enter title...</string>
     <string name="search">Search</string>
+    <string name="person_name">Person Name</string>
+    <string name="also_known_as">Also Known as :</string>
+    <string name="date_of_birth">Date of Birth :</string>
+    <string name="place_of_birth">Place of Birth :</string>
+    <string name="death_day">Death day :</string>
+    <string name="department">Department :</string>
+    <string name="homepage">Homepage :</string>
+    <string name="biography">Biography :</string>
 </resources>

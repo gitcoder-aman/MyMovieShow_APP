@@ -15,3 +15,23 @@ https://github.com/flavioarfaria/KenBurnsView
 
 //Picasso
 https://github.com/square/picasso
+
+//API Links
+
+     https://api.themoviedb.org/3/  - this is base url .we have already created in client
+
+     https://api.themoviedb.org/3/search/movie?api_key={YOUR_API_KEY}&query={MOVIE_NAME}   //without curly brackets
+
+     //this is url to get the movie results
+
+    https://api.themoviedb.org/3/search/person?api_key={YOUR_API_KEY}&query={ACTOR_NAME}   //without curly brackets
+
+
+
+//if you get person(Actor) detail
+
+https://api.themoviedb.org/3/person/{PERSON_ID}?api_key=ac28a3498de90c46b11f31bda02b8b97
+
+//if you get movie detail
+
+https://api.themoviedb.org/3/movie/{MOVIE_ID}?api_key=ac28a3498de90c46b11f31bda02b8b97

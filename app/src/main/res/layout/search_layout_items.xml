@@ -10,12 +10,13 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <com.github.florent37.diagonallayout.DiagonalLayout
             android:layout_width="match_parent"
             android:layout_height="250dp"
+            android:background="@color/yellow"
             app:diagonal_angle="10"
             app:diagonal_position="bottom"
             app:diagonal_direction="left">
@@ -35,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:background="#FFEB3B"
+            android:background="@color/yellow"
             android:fontFamily="@font/acme"
             android:gravity="center"
             android:padding="20dp"

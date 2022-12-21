@@ -1,5 +1,6 @@
 package com.tech.mymovieshow.ViewHolders;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -27,9 +28,10 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
 
         RandomTransitionGenerator generator = new RandomTransitionGenerator(1000, new DecelerateInterpolator());
         posterImageView.setTransitionGenerator(generator);
+
     }
 
-    public void setPosterImageView(Context context, String posterUrl) {
+    public void setPosterImageView(Activity activity, String posterUrl) {
 
         Picasso.get()
                 .load(posterUrl)

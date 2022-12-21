@@ -1,11 +1,16 @@
 package com.tech.mymovieshow;
 
+import static androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL;
+import static androidx.recyclerview.widget.LinearLayoutManager.VERTICAL;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -66,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         querySearchBtn = findViewById(R.id.query_search_btn);
         resultRecyclerView = findViewById(R.id.results_recyclerView);
 
-        resultRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        resultRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,VERTICAL));
 
         Paper.init(this);
 
@@ -80,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         spinner.setItems(category);
 
         //retrieve the position at start and the set the spinner
-        if(Paper.book().read("position") != null){
+        if (Paper.book().read("position") != null) {
             int position = Paper.book().read("position");
             spinner.setSelectedIndex(position);
         }
@@ -106,28 +111,28 @@ public class MainActivity extends AppCompatActivity {
                     queryEditText.setHint("Enter any Person name...");
                 }
 
-                Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, "Switched " + item, Snackbar.LENGTH_LONG).show();
             }
         });
 
         //retrieve the results from paper db and start
-        if(Paper.book().read("cache") != null){
+        if (Paper.book().read("cache") != null) {
             String results = Paper.book().read("cache");
 
-            if(Paper.book().read("source") != null){
+            if (Paper.book().read("source") != null) {
                 String source = Paper.book().read("source");
-                if(source.equals("movie")){
+                if (source.equals("movie")) {
                     //convert the string cache to model movie response class using gson
-                    MovieResponse movieResponse = new Gson().fromJson(results,MovieResponse.class);
+                    MovieResponse movieResponse = new Gson().fromJson(results, MovieResponse.class);
                     if (movieResponse != null) {
 
                         List<MovieResponseResults> movieResponseResultsList = movieResponse.getResults();
 
-                        movieSearchAdapter = new MovieSearchAdapter(MainActivity.this,movieResponseResultsList);
+                        movieSearchAdapter = new MovieSearchAdapter(MainActivity.this, movieResponseResultsList);
                         resultRecyclerView.setAdapter(movieSearchAdapter);
 
                         //Create some animation view item loading
-                        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(MainActivity.this,R.anim.layout_slide_right);
+                        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(MainActivity.this, R.anim.layout_slide_right);
                         resultRecyclerView.setLayoutAnimation(controller);
                         resultRecyclerView.scheduleLayoutAnimation();
 
@@ -139,18 +144,18 @@ public class MainActivity extends AppCompatActivity {
                         Paper.book().write("source", "movie");
                     }
 
-                }else{
-                    PersonResponse personResponse = new Gson().fromJson(results,PersonResponse.class);
+                } else {
+                    PersonResponse personResponse = new Gson().fromJson(results, PersonResponse.class);
 
                     if (personResponse != null) {
 
                         List<PersonResponseResults> personResponseResultsList = personResponse.getResults();
 
-                        personSearchAdapter = new PersonSearchAdapter(MainActivity.this,personResponseResultsList);
+                        personSearchAdapter = new PersonSearchAdapter(MainActivity.this, personResponseResultsList);
                         resultRecyclerView.setAdapter(personSearchAdapter);
 
                         //Create some animation view item loading
-                        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(MainActivity.this,R.anim.layout_slide_right);
+                        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(MainActivity.this, R.anim.layout_slide_right);
                         resultRecyclerView.setLayoutAnimation(controller);
                         resultRecyclerView.scheduleLayoutAnimation();
 
@@ -200,27 +205,35 @@ public class MainActivity extends AppCompatActivity {
                                             Log.d("debug", "onResponse on movie");
 
                                             List<MovieResponseResults> movieResponseResultsList = movieResponse.getResults();
-                                            Log.d("debug", movieResponseResultsList.get(0).getTitle());
 
-                                            movieSearchAdapter = new MovieSearchAdapter(MainActivity.this,movieResponseResultsList);
-                                            resultRecyclerView.setAdapter(movieSearchAdapter);
+                                            if (!movieResponseResultsList.isEmpty()) { //here checking is movie is  available or not
 
-                                            //Create some animation view item loading
-                                            LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(MainActivity.this,R.anim.layout_slide_right);
-                                            resultRecyclerView.setLayoutAnimation(controller);
-                                            resultRecyclerView.scheduleLayoutAnimation();
+                                                Log.d("debug", "not null");
+                                                Log.d("debug", movieResponseResultsList.get(0).getTitle());
 
-                                            //now store the results in paper database to access offline
+                                                movieSearchAdapter = new MovieSearchAdapter(MainActivity.this, movieResponseResultsList);
+                                                resultRecyclerView.setAdapter(movieSearchAdapter);
 
-                                            Paper.book().write("cache", new Gson().toJson(movieResponse));
+                                                //Create some animation view item loading
+                                                LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(MainActivity.this, R.anim.layout_slide_right);
+                                                resultRecyclerView.setLayoutAnimation(controller);
+                                                resultRecyclerView.scheduleLayoutAnimation();
 
-                                            //store also category to set the spinner at app start
-                                            Paper.book().write("source", "movie");
-                                        }else{
-                                            Log.d("debug", "responseNULL");
+                                                //now store the results in paper database to access offline
+
+                                                Paper.book().write("cache", new Gson().toJson(movieResponse));
+
+                                                //store also category to set the spinner at app start
+                                                Paper.book().write("source", "movie");
+                                            } else {
+                                                Snackbar.make(view, query+" Movie haven't available",Snackbar.LENGTH_LONG).show();
+                                                Log.d("debug", "No Movie Response");
+                                            }
+                                        } else {
+                                            Log.d("debug", "MovieResponse NULL");
                                         }
 
-                                    }
+                                    }  //onResponse close bracket
 
                                     @Override
                                     public void onFailure(@NonNull Call<MovieResponse> call, @NonNull Throwable t) {
@@ -231,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 //Now do the same thing of person
 
-                                Call<PersonResponse>personResponseCall = retrofitService.getPersonByQuery(api,finalQuery);
+                                Call<PersonResponse> personResponseCall = retrofitService.getPersonByQuery(api, finalQuery);
 
                                 personResponseCall.enqueue(new Callback<PersonResponse>() {
                                     @Override
@@ -243,11 +256,11 @@ public class MainActivity extends AppCompatActivity {
                                             Log.d("debug", "onResponse on Person");
                                             List<PersonResponseResults> personResponseResultsList = personResponse.getResults();
 
-                                            personSearchAdapter = new PersonSearchAdapter(MainActivity.this,personResponseResultsList);
+                                            personSearchAdapter = new PersonSearchAdapter(MainActivity.this, personResponseResultsList);
                                             resultRecyclerView.setAdapter(personSearchAdapter);
 
                                             //Create some animation view item loading
-                                            LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(MainActivity.this,R.anim.layout_slide_right);
+                                            LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(MainActivity.this, R.anim.layout_slide_right);
                                             resultRecyclerView.setLayoutAnimation(controller);
                                             resultRecyclerView.scheduleLayoutAnimation();
 
@@ -280,6 +293,6 @@ public class MainActivity extends AppCompatActivity {
 
         //set the position of spinner in offline to retrieve at start
 
-        Paper.book().write("position",spinner.getSelectedIndex());
+        Paper.book().write("position", spinner.getSelectedIndex());
     }
 }
