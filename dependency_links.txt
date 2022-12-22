@@ -16,6 +16,10 @@ https://github.com/flavioarfaria/KenBurnsView
 //Picasso
 https://github.com/square/picasso
 
+//zoomage viewer
+https://github.com/jsibbold/zoomage with maven {url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'}  // for zoomage viewer
+
+
 //API Links
 
      https://api.themoviedb.org/3/  - this is base url .we have already created in client
@@ -35,3 +39,11 @@ https://api.themoviedb.org/3/person/{PERSON_ID}?api_key=ac28a3498de90c46b11f31bd
 //if you get movie detail
 
 https://api.themoviedb.org/3/movie/{MOVIE_ID}?api_key=ac28a3498de90c46b11f31bda02b8b97
+
+//if you get person profile image
+
+
+
+
+//for image view on webiste this is base url
+   baseUrl = "https://image.tmdb.org/t/p/w500"

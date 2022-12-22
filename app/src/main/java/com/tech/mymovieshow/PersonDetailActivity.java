@@ -4,19 +4,27 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.squareup.picasso.Picasso;
+import com.tech.mymovieshow.Adapters.PersonProfileImageAdapter;
 import com.tech.mymovieshow.Client.RetrofitClient;
 import com.tech.mymovieshow.Interfaces.RetrofitService;
 import com.tech.mymovieshow.Model.PersonDetailModel;
+import com.tech.mymovieshow.Model.PersonImages;
+import com.tech.mymovieshow.Model.PersonImagesProfile;
 
+import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Call;
@@ -34,6 +42,7 @@ public class PersonDetailActivity extends AppCompatActivity {
     private LinearLayoutCompat personDetailDepartmentLayout;
     private LinearLayoutCompat personDetailHomepageLayout;
     private LinearLayoutCompat personDetailBiographyLayout;
+    private LinearLayoutCompat personDetailProfileImagesLayout;
 
     private AppCompatTextView personDetailAlsoKnownAs;
     private AppCompatTextView personDetailBirthday;
@@ -43,6 +52,9 @@ public class PersonDetailActivity extends AppCompatActivity {
     private AppCompatTextView personDetailHomepage;
     private AppCompatTextView personDetailBiography;
     private AppCompatTextView personDetailName;
+
+    private RecyclerView personDetailProfileImageRecyclerView;
+    private PersonProfileImageAdapter personProfileImageAdapter;
 
     private final static String api = "ac28a3498de90c46b11f31bda02b8b97";
     @Override
@@ -58,6 +70,7 @@ public class PersonDetailActivity extends AppCompatActivity {
         personDetailDepartmentLayout = findViewById(R.id.person_detail_known_for_department_layout);
         personDetailHomepageLayout = findViewById(R.id.person_detail_homepage_layout);
         personDetailBiographyLayout = findViewById(R.id.person_detail_biography_layout);
+        personDetailProfileImagesLayout = findViewById(R.id.person_detail_profile_layout);
 
         personDetailAlsoKnownAs = findViewById(R.id.person_detail_also_known_as);
         personDetailBirthday = findViewById(R.id.person_detail_birthday);
@@ -69,6 +82,9 @@ public class PersonDetailActivity extends AppCompatActivity {
         personDetailName = findViewById(R.id.person_detail_name);
 
         personDetailProfileImageView = findViewById(R.id.person_detail_profileImage);
+        personDetailProfileImageRecyclerView = findViewById(R.id.person_detail_profileImage_recyclerView);
+
+        personDetailProfileImageRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
 
         //initiate the retrofit service
         RetrofitService retrofitService = RetrofitClient.getClient().create(RetrofitService.class);
@@ -81,6 +97,7 @@ public class PersonDetailActivity extends AppCompatActivity {
 
                 int id = Integer.parseInt(intent.getExtras().getString("id"));
 
+                //Person Details call Response
                 Call<PersonDetailModel> personDetailModelCall = retrofitService.getPersonDetailsById(id,api);
 
                 personDetailModelCall.enqueue(new Callback<PersonDetailModel>() {
@@ -101,6 +118,41 @@ public class PersonDetailActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Call<PersonDetailModel> call, @NonNull Throwable t) {
                         Log.d("debug", t.getLocalizedMessage());
                         Log.d("debug", "Fail Person Detail Response");
+                    }
+                });
+
+                //Person Images call Response
+                Call<PersonImages>personImagesCall = retrofitService.getPersonImagesById(id,api);
+
+                personImagesCall.enqueue(new Callback<PersonImages>() {
+                    @Override
+                    public void onResponse(@NonNull Call<PersonImages> call, @NonNull Response<PersonImages> response) {
+
+                        PersonImages personImages = response.body();
+                        if(personImages != null){
+                            List<PersonImagesProfile>personImagesProfileList = personImages.getProfiles();
+
+                            if(!personImagesProfileList.isEmpty()){
+
+                                personDetailProfileImagesLayout.setVisibility(View.VISIBLE);
+                                personProfileImageAdapter = new PersonProfileImageAdapter(PersonDetailActivity.this, personImagesProfileList);
+                                personDetailProfileImageRecyclerView.setAdapter(personProfileImageAdapter);
+
+                                LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(PersonDetailActivity.this,R.anim.layout_slide_right);
+                                personDetailProfileImageRecyclerView.setLayoutAnimation(controller);
+                                personDetailProfileImageRecyclerView.scheduleLayoutAnimation();
+
+                            }
+                            else{
+                                personDetailProfileImagesLayout.setVisibility(View.GONE);
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<PersonImages> call, @NonNull Throwable t) {
+                        Log.d("debug", "On Response Fail");
                     }
                 });
             }
@@ -133,7 +185,10 @@ public class PersonDetailActivity extends AppCompatActivity {
         }
 
         if(birthDay != null && birthDay.length() > 0){
-            personDetailBirthday.setText(birthDay);
+
+            int year = Integer.parseInt(birthDay.substring(0,4));
+            int currentYear = Integer.parseInt(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+            personDetailBirthday.setText(birthDay + "  ("+(currentYear-year) +" years old" + ")");
             personDetailBirthdayLayout.setVisibility(View.VISIBLE);
         }else{
             personDetailBirthdayLayout.setVisibility(View.GONE);

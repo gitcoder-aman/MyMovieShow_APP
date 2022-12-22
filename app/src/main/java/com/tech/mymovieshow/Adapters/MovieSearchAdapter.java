@@ -1,6 +1,7 @@
 package com.tech.mymovieshow.Adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tech.mymovieshow.Model.MovieResponseResults;
+import com.tech.mymovieshow.PersonDetailActivity;
 import com.tech.mymovieshow.R;
 import com.tech.mymovieshow.ViewHolders.SearchViewHolder;
 
@@ -40,12 +42,15 @@ public class MovieSearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
         holder.setPosterImageView(activity,responseResults.getPoster_path());
 
         String title = responseResults.getTitle();
+        int id = responseResults.getId();
+
         if(title != null){
             holder.posterTitle.setVisibility(View.VISIBLE);
             holder.posterTitle.setText(title);
         }else{
             holder.posterTitle.setVisibility(View.GONE);
         }
+
     }
 
     @Override

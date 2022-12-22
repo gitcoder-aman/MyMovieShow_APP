@@ -2,6 +2,7 @@ package com.tech.mymovieshow.Model;
 
 import java.util.List;
 
+//
 public class PersonDetailModel {
 
     private String birthday;
