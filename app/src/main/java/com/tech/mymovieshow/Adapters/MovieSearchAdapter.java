@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tech.mymovieshow.Model.MovieResponseResults;
+import com.tech.mymovieshow.MovieDetailActivity;
 import com.tech.mymovieshow.PersonDetailActivity;
 import com.tech.mymovieshow.R;
 import com.tech.mymovieshow.ViewHolders.SearchViewHolder;
@@ -50,6 +51,19 @@ public class MovieSearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
         }else{
             holder.posterTitle.setVisibility(View.GONE);
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(activity, MovieDetailActivity.class);
+                intent.putExtra("id",String.valueOf(id));
+                activity.startActivity(intent);
+
+                //Create some animation to open the new Activity
+                activity.overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+            }
+        });
 
     }
 

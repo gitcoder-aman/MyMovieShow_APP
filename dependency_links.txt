@@ -19,6 +19,11 @@ https://github.com/square/picasso
 //zoomage viewer
 https://github.com/jsibbold/zoomage with maven {url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'}  // for zoomage viewer
 
+//Circular Image View
+https://github.com/hdodenhof/CircleImageView
+
+//Circluar progress bar
+https://github.com/antonKozyriatskyi/CircularProgressIndicator
 
 //API Links
 
@@ -42,7 +47,11 @@ https://api.themoviedb.org/3/movie/{MOVIE_ID}?api_key=ac28a3498de90c46b11f31bda0
 
 //if you get person profile image
 
+https://api.themoviedb.org/3/person/{PERSON_ID}/images?api_key=ac28a3498de90c46b11f31bda02b8b97
 
+//if you get movie crew and movie cast
+
+https://api.themoviedb.org/3/movie/{MOVIE_ID}/credits?api_key=ac28a3498de90c46b11f31bda02b8b97
 
 
 //for image view on webiste this is base url

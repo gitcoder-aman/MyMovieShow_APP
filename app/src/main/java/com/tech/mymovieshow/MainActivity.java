@@ -1,23 +1,20 @@
 package com.tech.mymovieshow;
 
-import static androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL;
-import static androidx.recyclerview.widget.LinearLayoutManager.VERTICAL;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -48,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private AppCompatButton querySearchBtn;
     private RecyclerView resultRecyclerView;
 
-    private String movie = "By Movie Title";
-    private String person = "By Person Name";
+    private final String movie = "By Movie Title";
+    private final String person = "By Person Name";
     private final static String api = "ac28a3498de90c46b11f31bda02b8b97";
 
     //initiate the Retrofit Service
@@ -71,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         querySearchBtn = findViewById(R.id.query_search_btn);
         resultRecyclerView = findViewById(R.id.results_recyclerView);
 
-        resultRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,VERTICAL));
+        resultRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
 
         Paper.init(this);
 
@@ -175,6 +172,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                // keyword close after search button click
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+
+
                 if (queryEditText.getText().toString() != null) {
 
                     String query = queryEditText.getText().toString();
@@ -226,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
                                                 //store also category to set the spinner at app start
                                                 Paper.book().write("source", "movie");
                                             } else {
-                                                Snackbar.make(view, query+" Movie haven't available",Snackbar.LENGTH_LONG).show();
+                                                Snackbar.make(view, query + " Movie haven't available", Snackbar.LENGTH_LONG).show();
                                                 Log.d("debug", "No Movie Response");
                                             }
                                         } else {
@@ -284,6 +286,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+
         });
     }
 

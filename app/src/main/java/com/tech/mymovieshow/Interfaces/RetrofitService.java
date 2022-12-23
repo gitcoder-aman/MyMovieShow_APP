@@ -1,6 +1,7 @@
 package com.tech.mymovieshow.Interfaces;
 
 
+import com.tech.mymovieshow.Model.MovieDetailModel;
 import com.tech.mymovieshow.Model.MovieResponse;
 import com.tech.mymovieshow.Model.PersonDetailModel;
 import com.tech.mymovieshow.Model.PersonImages;
@@ -46,6 +47,11 @@ public interface RetrofitService {
 
     @GET("person/{person_id}/images")
     Call<PersonImages>getPersonImagesById(@Path("person_id") int person_id, @Query("api_key") String api_key);
+
+    //create a Service for movie Details
+
+    @GET("movie/{movie_id}")
+    Call<MovieDetailModel>getMovieDetailsById(@Path("movie_id") int movie_id, @Query("api_key") String api_key);
 
 
 }

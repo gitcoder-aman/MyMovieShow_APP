@@ -7,7 +7,7 @@ import java.util.List;
 
 public class MovieDetailModel {
 
-    private String adult;
+    private boolean adult;
     private String backdrop_path;
     private MovieDetailsBelongToCollection belongs_to_collection;
     private Integer budget;
@@ -42,7 +42,7 @@ public class MovieDetailModel {
     public MovieDetailModel() {
     }
 
-    public MovieDetailModel(String adult, String backdrop_path, MovieDetailsBelongToCollection belongs_to_collection, Integer budget, List<MovieDetailsGenres> genres, String homepage, Integer id, String imdb_id, String original_language, String original_title, String overview, Double popularity, String poster_path, List<MovieDetailProductCompany> production_companies, List<MovieDetailProductCountry> production_countries, String release_date, Long revenue, Integer runtime, List<MovieDetailSpokenLanguage> spoken_languages, String status, String tagline, String title, boolean video, float vote_average, Integer vote_count) {
+    public MovieDetailModel(boolean adult, String backdrop_path, MovieDetailsBelongToCollection belongs_to_collection, Integer budget, List<MovieDetailsGenres> genres, String homepage, Integer id, String imdb_id, String original_language, String original_title, String overview, Double popularity, String poster_path, List<MovieDetailProductCompany> production_companies, List<MovieDetailProductCountry> production_countries, String release_date, Long revenue, Integer runtime, List<MovieDetailSpokenLanguage> spoken_languages, String status, String tagline, String title, boolean video, float vote_average, Integer vote_count) {
         this.adult = adult;
         this.backdrop_path = backdrop_path;
         this.belongs_to_collection = belongs_to_collection;
@@ -70,11 +70,11 @@ public class MovieDetailModel {
         this.vote_count = vote_count;
     }
 
-    public String getAdult() {
+    public boolean getAdult() {
         return adult;
     }
 
-    public void setAdult(String adult) {
+    public void setAdult(boolean adult) {
         this.adult = adult;
     }
 
