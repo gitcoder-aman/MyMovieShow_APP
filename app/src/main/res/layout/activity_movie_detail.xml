@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/background_black"
     tools:context=".MovieDetailActivity">
 
     <com.github.florent37.diagonallayout.DiagonalLayout
         android:id="@+id/movie_detail_diagonalView"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="@color/white"
+        android:layout_height="200dp"
+        android:background="@color/background_black"
         app:diagonal_angle="8"
         app:diagonal_direction="left"
         app:diagonal_position="bottom">
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="145dp"
+        android:layout_marginTop="110dp"
         android:layout_marginEnd="29dp"
         android:gravity="bottom"
         android:orientation="vertical">
@@ -48,14 +48,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:background="@drawable/edit_text_background"
             android:fontFamily="@font/almendra_sc"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="5dp"
             android:text="@string/movie_name"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:background="@drawable/edit_text_background"/>
+            android:textStyle="bold" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -65,7 +65,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="155dp"
+        android:layout_marginTop="110dp"
+        android:layout_marginBottom="5dp"
         android:orientation="vertical">
 
         <antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator
@@ -94,15 +95,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="@drawable/edit_text_background"
             android:fontFamily="@font/almendra_sc"
             android:gravity="center"
-            android:layout_marginTop="5dp"
             android:padding="10dp"
             android:text="@string/average_rating"
-            android:textStyle="bold"
             android:textColor="@color/black"
-            android:background="@drawable/edit_text_background"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -111,33 +111,34 @@
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:layout_below="@+id/back_drop_layout"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/drop_shadow" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:layout_below="@+id/shadow"
+        android:id="@+id/movie_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/movie_detail"
-        android:text="@string/movie_details"
+        android:layout_below="@+id/shadow"
+        android:background="@color/yellow"
         android:gravity="center"
-        android:textStyle="bold|italic"
+        android:padding="5dp"
+        android:text="@string/movie_details"
         android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold|italic" />
 
     <View
         android:id="@+id/shadow1"
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:layout_below="@+id/movie_detail"
-        android:layout_marginTop="5dp"
         android:background="@drawable/drop_shadow" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/shadow1"
-        android:layout_marginTop="10dp">
+        android:background="@color/yellow">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -504,6 +505,145 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
+
+<!--            here movie credits cast know -->
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:id="@+id/shadow2"
+                android:background="@color/background_black"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/movie_detail_cast_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_margin="5dp"
+                    android:gravity="start"
+                    android:text="@string/movie_cast"
+                    android:textColor="@color/black" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/movie_detail_cast_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:background="@color/background_black" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <!--            here movie credits crew know -->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/movie_detail_crew_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_margin="5dp"
+                    android:gravity="start"
+                    android:text="@string/movie_crew"
+                    android:textColor="@color/black" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/movie_detail_crew_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:background="@color/background_black" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <!--            here movie production details -->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/movie_detail_productionCompanyLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_margin="5dp"
+                    android:gravity="start"
+                    android:text="@string/production_company"
+                    android:textColor="@color/black" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/movie_detail_productionCompany_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:background="@color/background_black" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <!--            here movie images details -->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/movie_detail_ImagesLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_margin="5dp"
+                    android:gravity="start"
+                    android:text="@string/images_and_posters"
+                    android:textColor="@color/black" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/movie_detail_Image_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:background="@color/background_black" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <!--            here movie images details -->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/movie_detail_VideoLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_margin="5dp"
+                    android:gravity="start"
+                    android:text="@string/videos_and_trailers"
+                    android:textColor="@color/black" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/movie_detail_Video_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:background="@color/background_black" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.core.widget.NestedScrollView>

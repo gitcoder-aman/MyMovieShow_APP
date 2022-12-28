@@ -91,6 +91,8 @@
             android:background="@drawable/edit_text_background"
             android:hint="@string/enter_title"
             android:inputType="text"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="5dp"
             android:lines="1"
             android:minHeight="48dp"
             android:padding="10dp"

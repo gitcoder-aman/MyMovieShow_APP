@@ -4,22 +4,40 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.squareup.picasso.Picasso;
+import com.tech.mymovieshow.Adapters.MovieCreditsCastAdapter;
+import com.tech.mymovieshow.Adapters.MovieCreditsCrewAdapter;
+import com.tech.mymovieshow.Adapters.MoviePosterImagesAdapter;
+import com.tech.mymovieshow.Adapters.MovieProductionCompanyAdapter;
+import com.tech.mymovieshow.Adapters.MovieVideosAdapter;
 import com.tech.mymovieshow.Client.RetrofitClient;
 import com.tech.mymovieshow.Interfaces.RetrofitService;
+import com.tech.mymovieshow.Model.MovieCreditsCastModel;
+import com.tech.mymovieshow.Model.MovieCreditsCrewModel;
+import com.tech.mymovieshow.Model.MovieCreditsModel;
 import com.tech.mymovieshow.Model.MovieDetailModel;
+import com.tech.mymovieshow.Model.MovieDetailProductCompany;
 import com.tech.mymovieshow.Model.MovieDetailProductCountry;
 import com.tech.mymovieshow.Model.MovieDetailsGenres;
+import com.tech.mymovieshow.Model.MovieImagesBackDropAndPosters;
+import com.tech.mymovieshow.Model.MovieImagesModel;
+import com.tech.mymovieshow.Model.MovieVideosModel;
+import com.tech.mymovieshow.Model.MovieVideosResults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
@@ -42,6 +60,11 @@ public class MovieDetailActivity extends AppCompatActivity {
     private LinearLayoutCompat movieDetailReleaseLayout;
     private LinearLayoutCompat movieDetailHomepageLayout;
     private LinearLayoutCompat movieDetailOverviewLayout;
+    private LinearLayoutCompat movieDetailCastLayout;
+    private LinearLayoutCompat movieDetailCrewLayout;
+    private LinearLayoutCompat movieDetailProductionCompanyLayout;
+    private LinearLayoutCompat movieDetailImagesLayout;
+    private LinearLayoutCompat movieDetailVideoLayout;
 
     private AppCompatTextView movieDetailTitle1TextView;
 
@@ -58,9 +81,15 @@ public class MovieDetailActivity extends AppCompatActivity {
     private AppCompatTextView movieDetailHomepageTextView;
     private AppCompatTextView movieDetailOverviewTextView;
 
-    private CircularProgressIndicator circularProgress;
+    private CircularProgressIndicator movieDetailRatingBar;
     private CircleImageView movieDetailPosterCircleImageView;
     private KenBurnsView movieDetailPosterImage;
+
+    private RecyclerView movieDetailCastRecyclerView;
+    private RecyclerView movieDetailCrewRecyclerView;
+    private RecyclerView movieDetailProductionCompanyRecyclerView;
+    private RecyclerView movieDetailImageRecyclerView;
+    private RecyclerView movieDetailVideoRecyclerView;
 
     private final static String api = "ac28a3498de90c46b11f31bda02b8b97";
 
@@ -82,6 +111,11 @@ public class MovieDetailActivity extends AppCompatActivity {
         movieDetailReleaseLayout = findViewById(R.id.movie_detail_releaseLayout);
         movieDetailHomepageLayout = findViewById(R.id.movie_detail_homePageLayout);
         movieDetailOverviewLayout = findViewById(R.id.movie_detail_overviewLayout);
+        movieDetailCastLayout = findViewById(R.id.movie_detail_cast_layout);
+        movieDetailCrewLayout = findViewById(R.id.movie_detail_crew_layout);
+        movieDetailProductionCompanyLayout = findViewById(R.id.movie_detail_productionCompanyLayout);
+        movieDetailImagesLayout = findViewById(R.id.movie_detail_ImagesLayout);
+        movieDetailVideoLayout = findViewById(R.id.movie_detail_VideoLayout);
 
         //TextView findView
         movieDetailTitle1TextView = findViewById(R.id.movie_detail_title1);
@@ -99,8 +133,22 @@ public class MovieDetailActivity extends AppCompatActivity {
         movieDetailHomepageTextView = findViewById(R.id.movie_detail_homePage);
         movieDetailOverviewTextView = findViewById(R.id.movie_detail_overview);
 
+        movieDetailCastRecyclerView = findViewById(R.id.movie_detail_cast_recyclerView);
+        movieDetailCastRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        circularProgress = findViewById(R.id.movie_detail_ratingBar);
+        movieDetailCrewRecyclerView = findViewById(R.id.movie_detail_crew_recyclerView);
+        movieDetailCrewRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        movieDetailProductionCompanyRecyclerView = findViewById(R.id.movie_detail_productionCompany_recyclerView);
+        movieDetailProductionCompanyRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        movieDetailImageRecyclerView = findViewById(R.id.movie_detail_Image_recyclerView);
+        movieDetailImageRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+
+        movieDetailVideoRecyclerView = findViewById(R.id.movie_detail_Video_recyclerView);
+        movieDetailVideoRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+
+        movieDetailRatingBar = findViewById(R.id.movie_detail_ratingBar);
         movieDetailPosterCircleImageView = findViewById(R.id.movie_detail_posterCircle_imageView);
         movieDetailPosterImage = findViewById(R.id.movie_detail_posterImage);
 
@@ -139,6 +187,157 @@ public class MovieDetailActivity extends AppCompatActivity {
                     }
                 });
 
+                //Credit , Crew/cast details call
+                Call<MovieCreditsModel> movieCreditsModelCall = retrofitService.getMovieCreditsById(movie_id, api);
+
+                movieCreditsModelCall.enqueue(new Callback<MovieCreditsModel>() {
+                    @Override
+                    public void onResponse(@NonNull Call<MovieCreditsModel> call, @NonNull Response<MovieCreditsModel> response) {
+
+                        MovieCreditsModel movieCreditsModelResponse = response.body();
+                        if (movieCreditsModelResponse != null) {
+
+                            //Set adapter cast
+
+                            List<MovieCreditsCastModel> movieCreditsCastModelList = movieCreditsModelResponse.getCast();
+
+                            if (movieCreditsCastModelList != null && movieCreditsCastModelList.size() > 0) {
+                                MovieCreditsCastAdapter movieCreditsCastAdapter = new MovieCreditsCastAdapter(MovieDetailActivity.this, movieCreditsCastModelList);
+                                movieDetailCastRecyclerView.setAdapter(movieCreditsCastAdapter);
+
+                                movieDetailCastLayout.setVisibility(View.VISIBLE);
+
+                                LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(MovieDetailActivity.this, R.anim.layout_slide_right);
+                                movieDetailCastRecyclerView.setLayoutAnimation(controller);
+                                movieDetailCastRecyclerView.scheduleLayoutAnimation();
+
+                            } else {
+                                movieDetailCastLayout.setVisibility(View.GONE);
+                                Toast.makeText(MovieDetailActivity.this, "Any Cast details not found ", Toast.LENGTH_SHORT).show();
+                            }
+
+                            //Set adapter crew
+                            List<MovieCreditsCrewModel> movieCreditsCrewModelList = movieCreditsModelResponse.getCrew();
+
+                            if (movieCreditsCrewModelList != null && movieCreditsCrewModelList.size() > 0) {
+                                MovieCreditsCrewAdapter movieCreditsCrewAdapter = new MovieCreditsCrewAdapter(MovieDetailActivity.this, movieCreditsCrewModelList);
+                                movieDetailCrewRecyclerView.setAdapter(movieCreditsCrewAdapter);
+
+                                movieDetailCrewLayout.setVisibility(View.VISIBLE);
+
+                                LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(MovieDetailActivity.this, R.anim.layout_slide_right);
+                                movieDetailCrewRecyclerView.setLayoutAnimation(controller);
+                                movieDetailCrewRecyclerView.scheduleLayoutAnimation();
+
+                            } else {
+                                movieDetailCrewLayout.setVisibility(View.GONE);
+                                Toast.makeText(MovieDetailActivity.this, "Any Crew details not found ", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } else {
+                            movieDetailCastLayout.setVisibility(View.GONE);
+                            movieDetailCrewLayout.setVisibility(View.GONE);
+                            Log.d("debug", "MOVIE RESPONSE NULL");
+                            Toast.makeText(MovieDetailActivity.this, "Any Credit details not found!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<MovieCreditsModel> call, @NonNull Throwable t) {
+                        Log.d("debug", "Movie Credits Response Fail");
+                    }
+                });
+
+                //Movie Images Call from API
+                Call<MovieImagesModel>movieImagesModelCall = retrofitService.getMovieImagesById(movie_id, api);
+
+                movieImagesModelCall.enqueue(new Callback<MovieImagesModel>() {
+                    @Override
+                    public void onResponse(@NonNull Call<MovieImagesModel> call, @NonNull Response<MovieImagesModel> response) {
+
+                        MovieImagesModel movieImagesModelCallResponse = response.body();
+
+                        if(movieImagesModelCallResponse != null){
+
+                            ArrayList<MovieImagesBackDropAndPosters> movieImagesBackDropAndPostersArrayList = new ArrayList<>();
+                            List<MovieImagesBackDropAndPosters>movieImagesBackDropList = movieImagesModelCallResponse.getBackdrops();
+                            List<MovieImagesBackDropAndPosters>movieImagesPostersList = movieImagesModelCallResponse.getPosters();
+
+                            if(movieImagesBackDropList != null && movieImagesBackDropList.size() > 0) {
+
+                                if(movieImagesPostersList != null && movieImagesPostersList.size() > 0){
+                                    movieImagesBackDropAndPostersArrayList.addAll(movieImagesBackDropList);
+                                    movieImagesBackDropAndPostersArrayList.addAll(movieImagesPostersList);
+                                }else{
+                                    movieImagesBackDropAndPostersArrayList.addAll(movieImagesBackDropList);
+                                }
+                            }else if(movieImagesPostersList != null && movieImagesPostersList.size() > 0){
+                                movieImagesBackDropAndPostersArrayList.addAll(movieImagesPostersList);
+                            }else{
+                                movieImagesBackDropAndPostersArrayList.clear();
+                                movieDetailImagesLayout.setVisibility(View.GONE);
+                            }
+
+                            if(movieImagesBackDropAndPostersArrayList.size() > 0){
+                                MoviePosterImagesAdapter moviePosterImagesAdapter = new MoviePosterImagesAdapter(MovieDetailActivity.this,movieImagesBackDropAndPostersArrayList);
+                                movieDetailImageRecyclerView.setAdapter(moviePosterImagesAdapter);
+
+                                movieDetailImagesLayout.setVisibility(View.VISIBLE);
+                                LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(MovieDetailActivity.this,R.anim.layout_slide_right);
+                                movieDetailImageRecyclerView.setLayoutAnimation(controller);
+                                movieDetailImageRecyclerView.scheduleLayoutAnimation();
+                            }
+
+                        }else{
+                            Log.d("debug", "Movie Images NULL");
+                            Toast.makeText(MovieDetailActivity.this, "Movie Images Not Found", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<MovieImagesModel> call, @NonNull Throwable t) {
+                        Log.d("debug", "Movie Images Response Fail");
+                    }
+                });
+                //Movie Video Call from API
+
+                Call<MovieVideosModel>movieVideosModelCall = retrofitService.getMovieVideosById(movie_id, api);
+                movieVideosModelCall.enqueue(new Callback<MovieVideosModel>() {
+                    @Override
+                    public void onResponse(@NonNull Call<MovieVideosModel> call, @NonNull Response<MovieVideosModel> response) {
+                        MovieVideosModel movieVideosModelResponse = response.body();
+
+                        if(movieVideosModelResponse != null){
+                            List<MovieVideosResults> movieVideosResultsList =  movieVideosModelResponse.getResults();
+
+                            if(movieVideosResultsList != null && movieVideosResultsList.size() > 0){
+
+                                MovieVideosAdapter movieVideosAdapter = new MovieVideosAdapter(MovieDetailActivity.this,movieVideosResultsList);
+                                movieDetailVideoRecyclerView.setAdapter(movieVideosAdapter);
+
+                                movieDetailVideoLayout.setVisibility(View.VISIBLE);
+
+                                LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(MovieDetailActivity.this, R.anim.layout_slide_right);
+                                movieDetailVideoRecyclerView.setLayoutAnimation(controller);
+                                movieDetailVideoRecyclerView.scheduleLayoutAnimation();
+
+                            }else{
+                                movieDetailVideoLayout.setVisibility(View.GONE);
+                                Toast.makeText(MovieDetailActivity.this, "Video not found", Toast.LENGTH_SHORT).show();
+                            }
+
+
+                        }else{
+                            Toast.makeText(MovieDetailActivity.this, "Video not found", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<MovieVideosModel> call, @NonNull Throwable t) {
+                        Log.d("debug","Movie Videos Response Fail");
+                    }
+                });
+
             }
         }
 
@@ -157,10 +356,23 @@ public class MovieDetailActivity extends AppCompatActivity {
         long revenue = movieDetailModelResponse.getRevenue();
         List<MovieDetailsGenres> genresList = movieDetailModelResponse.getGenres();
         List<MovieDetailProductCountry> productCountryList = movieDetailModelResponse.getProduction_countries();
+        List<MovieDetailProductCompany> productCompanyList = movieDetailModelResponse.getProduction_companies();
         String release = movieDetailModelResponse.getRelease_date();
         String homePage = movieDetailModelResponse.getHomepage();
         String overview = movieDetailModelResponse.getOverview();
-        Double popularity = movieDetailModelResponse.getPopularity();
+        Double voteAverage = movieDetailModelResponse.getVote_average() * 10;
+
+        //        movieDetailRatingTextView.setText(String.valueOf(voteAverage));
+        // you can set max and current progress values individually
+//        circularProgress.setMaxProgress(10000);
+//        circularProgress.setCurrentProgress(popularity);
+// or all at once
+        int rating = voteAverage.intValue();
+        movieDetailRatingBar.setProgress(rating, 100);
+
+// you can get progress values using following getters
+//        circularProgress.getProgress(); // returns 5000
+//        circularProgress.getMaxProgress();
 
 
         //Set Circular ImageView
@@ -234,16 +446,6 @@ public class MovieDetailActivity extends AppCompatActivity {
             movieDetailOverviewLayout.setVisibility(View.GONE);
         }
 
-//        movieDetailRatingTextView.setText(String.valueOf(popularity));
-        // you can set max and current progress values individually
-//        circularProgress.setMaxProgress(10000);
-//        circularProgress.setCurrentProgress(popularity);
-// or all at once
-        circularProgress.setProgress(popularity, 10000);
-
-// you can get progress values using following getters
-//        circularProgress.getProgress(); // returns 5000
-//        circularProgress.getMaxProgress();
 
         if (genresList != null && genresList.size() > 0) {
             StringBuilder stringBuilder = new StringBuilder();
@@ -277,6 +479,22 @@ public class MovieDetailActivity extends AppCompatActivity {
             movieDetailProductionCountryLayout.setVisibility(View.VISIBLE);
         } else {
             movieDetailProductionCountryLayout.setVisibility(View.GONE);
+        }
+
+        if (productCompanyList != null && productCompanyList.size() > 0) {
+
+            MovieProductionCompanyAdapter movieProductionCompanyAdapter = new MovieProductionCompanyAdapter(MovieDetailActivity.this,productCompanyList);
+            movieDetailProductionCompanyRecyclerView.setAdapter(movieProductionCompanyAdapter);
+
+            movieDetailProductionCompanyLayout.setVisibility(View.VISIBLE);
+
+            LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(MovieDetailActivity.this, R.anim.layout_slide_right);
+            movieDetailProductionCompanyRecyclerView.setLayoutAnimation(controller);
+            movieDetailProductionCompanyRecyclerView.scheduleLayoutAnimation();
+
+        } else {
+            movieDetailProductionCompanyLayout.setVisibility(View.GONE);
+            Toast.makeText(MovieDetailActivity.this, "Any Product Company details not found ", Toast.LENGTH_SHORT).show();
         }
 
     }

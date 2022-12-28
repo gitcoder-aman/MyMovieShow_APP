@@ -1,7 +1,5 @@
 package com.tech.mymovieshow.Model;
 
-import android.graphics.Movie;
-import android.hardware.lights.LightState;
 
 import java.util.List;
 
@@ -35,14 +33,14 @@ public class MovieDetailModel {
     private String tagline;
     private String title;
     private boolean video;
-    private float vote_average;
+    private Double vote_average;
     private Integer vote_count;
 
 
     public MovieDetailModel() {
     }
 
-    public MovieDetailModel(boolean adult, String backdrop_path, MovieDetailsBelongToCollection belongs_to_collection, Integer budget, List<MovieDetailsGenres> genres, String homepage, Integer id, String imdb_id, String original_language, String original_title, String overview, Double popularity, String poster_path, List<MovieDetailProductCompany> production_companies, List<MovieDetailProductCountry> production_countries, String release_date, Long revenue, Integer runtime, List<MovieDetailSpokenLanguage> spoken_languages, String status, String tagline, String title, boolean video, float vote_average, Integer vote_count) {
+    public MovieDetailModel(boolean adult, String backdrop_path, MovieDetailsBelongToCollection belongs_to_collection, Integer budget, List<MovieDetailsGenres> genres, String homepage, Integer id, String imdb_id, String original_language, String original_title, String overview, Double popularity, String poster_path, List<MovieDetailProductCompany> production_companies, List<MovieDetailProductCountry> production_countries, String release_date, Long revenue, Integer runtime, List<MovieDetailSpokenLanguage> spoken_languages, String status, String tagline, String title, boolean video, Double vote_average, Integer vote_count) {
         this.adult = adult;
         this.backdrop_path = backdrop_path;
         this.belongs_to_collection = belongs_to_collection;
@@ -260,11 +258,11 @@ public class MovieDetailModel {
         this.video = video;
     }
 
-    public float getVote_average() {
+    public Double getVote_average() {
         return vote_average;
     }
 
-    public void setVote_average(float vote_average) {
+    public void setVote_average(Double vote_average) {
         this.vote_average = vote_average;
     }
 

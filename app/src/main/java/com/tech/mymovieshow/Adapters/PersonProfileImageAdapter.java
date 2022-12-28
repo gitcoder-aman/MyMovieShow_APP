@@ -19,6 +19,7 @@ import com.tech.mymovieshow.Model.PersonImagesProfile;
 import com.tech.mymovieshow.R;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PersonProfileImageAdapter extends RecyclerView.Adapter<PersonProfileImageAdapter.ViewHolder> {
 
@@ -45,15 +46,19 @@ public class PersonProfileImageAdapter extends RecyclerView.Adapter<PersonProfil
 
         String profile_path = personImagesProfile.getFile_path();
 
-                Picasso.get()
-                        .load(profile_path)
-                        .into(holder.profileImage);
+            Picasso.get()
+                    .load(profile_path)
+                    .placeholder(R.drawable.image_loding)
+                    .into(holder.profileImage);
+
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent imageViewerIntent = new Intent(activity, ImageViewerActivity.class);
-                        ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity,holder.profileImage, ViewCompat.getTransitionName(holder.profileImage));
+                        ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity,holder.profileImage,
+                                Objects.requireNonNull(ViewCompat.getTransitionName(holder.profileImage)));
+
                         imageViewerIntent.putExtra("image_url",personImagesProfile.getFile_path());
                         activity.startActivity(imageViewerIntent,compat.toBundle());
                     }

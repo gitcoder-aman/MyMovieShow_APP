@@ -25,6 +25,9 @@ https://github.com/hdodenhof/CircleImageView
 //Circluar progress bar
 https://github.com/antonKozyriatskyi/CircularProgressIndicator
 
+//Youtube thumbnail
+https://github.com/Codewaves/YouTube-Thumbnail-View
+
 //API Links
 
      https://api.themoviedb.org/3/  - this is base url .we have already created in client
@@ -52,6 +55,14 @@ https://api.themoviedb.org/3/person/{PERSON_ID}/images?api_key=ac28a3498de90c46b
 //if you get movie crew and movie cast
 
 https://api.themoviedb.org/3/movie/{MOVIE_ID}/credits?api_key=ac28a3498de90c46b11f31bda02b8b97
+
+//if you get movie Images from API
+
+https://api.themoviedb.org/3/movie/{MOVIE_ID}/images?api_key=ac28a3498de90c46b11f31bda02b8b97
+
+//if you get movie Videos from API
+
+https://api.themoviedb.org/3/movie/{MOVIE_ID}/videos?api_key=ac28a3498de90c46b11f31bda02b8b97
 
 
 //for image view on webiste this is base url

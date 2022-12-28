@@ -26,4 +26,10 @@
     <string name="overview">Overview :</string>
     <string name="movie_name">Movie Name</string>
     <string name="movie_details">Movie Details</string>
+    <string name="movie_cast">Movie Cast :</string>
+    <string name="movie_crew">Movie Crew :</string>
+    <string name="production_company">Production Company :</string>
+    <string name="images_and_posters">Images and Posters :</string>
+    <string name="videos_and_trailers">Videos and Trailers :</string>
+    <string name="more_videos_are_not_found">More Videos Are Not Found.</string>
 </resources>

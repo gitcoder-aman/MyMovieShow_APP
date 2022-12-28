@@ -1,8 +1,12 @@
 package com.tech.mymovieshow.Interfaces;
 
 
+import com.tech.mymovieshow.Model.MovieCreditsModel;
 import com.tech.mymovieshow.Model.MovieDetailModel;
+import com.tech.mymovieshow.Model.MovieImagesBackDropAndPosters;
+import com.tech.mymovieshow.Model.MovieImagesModel;
 import com.tech.mymovieshow.Model.MovieResponse;
+import com.tech.mymovieshow.Model.MovieVideosModel;
 import com.tech.mymovieshow.Model.PersonDetailModel;
 import com.tech.mymovieshow.Model.PersonImages;
 import com.tech.mymovieshow.Model.PersonImagesProfile;
@@ -52,6 +56,21 @@ public interface RetrofitService {
 
     @GET("movie/{movie_id}")
     Call<MovieDetailModel>getMovieDetailsById(@Path("movie_id") int movie_id, @Query("api_key") String api_key);
+
+    //create a Service for movie cast and crew
+
+    @GET("movie/{movie_id}/credits")
+    Call<MovieCreditsModel>getMovieCreditsById(@Path("movie_id") int movie_id, @Query("api_key") String api_key);
+
+    //create a Service for movie images
+
+    @GET("movie/{movie_id}/images")
+    Call<MovieImagesModel>getMovieImagesById(@Path("movie_id") int movie_id, @Query("api_key") String api_key);
+
+    //create a Service for movie Videos
+
+    @GET("movie/{movie_id}/videos")
+    Call<MovieVideosModel>getMovieVideosById(@Path("movie_id") int movie_id, @Query("api_key") String api_key);
 
 
 }
