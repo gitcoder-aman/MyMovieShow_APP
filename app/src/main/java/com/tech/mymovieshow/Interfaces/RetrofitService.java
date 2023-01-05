@@ -3,13 +3,11 @@ package com.tech.mymovieshow.Interfaces;
 
 import com.tech.mymovieshow.Model.MovieCreditsModel;
 import com.tech.mymovieshow.Model.MovieDetailModel;
-import com.tech.mymovieshow.Model.MovieImagesBackDropAndPosters;
 import com.tech.mymovieshow.Model.MovieImagesModel;
 import com.tech.mymovieshow.Model.MovieResponse;
 import com.tech.mymovieshow.Model.MovieVideosModel;
 import com.tech.mymovieshow.Model.PersonDetailModel;
 import com.tech.mymovieshow.Model.PersonImages;
-import com.tech.mymovieshow.Model.PersonImagesProfile;
 import com.tech.mymovieshow.Model.PersonResponse;
 
 import retrofit2.Call;

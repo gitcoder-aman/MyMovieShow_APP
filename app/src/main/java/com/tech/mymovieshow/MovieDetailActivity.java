@@ -143,10 +143,10 @@ public class MovieDetailActivity extends AppCompatActivity {
         movieDetailProductionCompanyRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         movieDetailImageRecyclerView = findViewById(R.id.movie_detail_Image_recyclerView);
-        movieDetailImageRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        movieDetailImageRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         movieDetailVideoRecyclerView = findViewById(R.id.movie_detail_Video_recyclerView);
-        movieDetailVideoRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        movieDetailVideoRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         movieDetailRatingBar = findViewById(R.id.movie_detail_ratingBar);
         movieDetailPosterCircleImageView = findViewById(R.id.movie_detail_posterCircle_imageView);
@@ -249,7 +249,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 });
 
                 //Movie Images Call from API
-                Call<MovieImagesModel>movieImagesModelCall = retrofitService.getMovieImagesById(movie_id, api);
+                Call<MovieImagesModel> movieImagesModelCall = retrofitService.getMovieImagesById(movie_id, api);
 
                 movieImagesModelCall.enqueue(new Callback<MovieImagesModel>() {
                     @Override
@@ -257,38 +257,38 @@ public class MovieDetailActivity extends AppCompatActivity {
 
                         MovieImagesModel movieImagesModelCallResponse = response.body();
 
-                        if(movieImagesModelCallResponse != null){
+                        if (movieImagesModelCallResponse != null) {
 
                             ArrayList<MovieImagesBackDropAndPosters> movieImagesBackDropAndPostersArrayList = new ArrayList<>();
-                            List<MovieImagesBackDropAndPosters>movieImagesBackDropList = movieImagesModelCallResponse.getBackdrops();
-                            List<MovieImagesBackDropAndPosters>movieImagesPostersList = movieImagesModelCallResponse.getPosters();
+                            List<MovieImagesBackDropAndPosters> movieImagesBackDropList = movieImagesModelCallResponse.getBackdrops();
+                            List<MovieImagesBackDropAndPosters> movieImagesPostersList = movieImagesModelCallResponse.getPosters();
 
-                            if(movieImagesBackDropList != null && movieImagesBackDropList.size() > 0) {
+                            if (movieImagesBackDropList != null && movieImagesBackDropList.size() > 0) {
 
-                                if(movieImagesPostersList != null && movieImagesPostersList.size() > 0){
+                                if (movieImagesPostersList != null && movieImagesPostersList.size() > 0) {
                                     movieImagesBackDropAndPostersArrayList.addAll(movieImagesBackDropList);
                                     movieImagesBackDropAndPostersArrayList.addAll(movieImagesPostersList);
-                                }else{
+                                } else {
                                     movieImagesBackDropAndPostersArrayList.addAll(movieImagesBackDropList);
                                 }
-                            }else if(movieImagesPostersList != null && movieImagesPostersList.size() > 0){
+                            } else if (movieImagesPostersList != null && movieImagesPostersList.size() > 0) {
                                 movieImagesBackDropAndPostersArrayList.addAll(movieImagesPostersList);
-                            }else{
+                            } else {
                                 movieImagesBackDropAndPostersArrayList.clear();
                                 movieDetailImagesLayout.setVisibility(View.GONE);
                             }
 
-                            if(movieImagesBackDropAndPostersArrayList.size() > 0){
-                                MoviePosterImagesAdapter moviePosterImagesAdapter = new MoviePosterImagesAdapter(MovieDetailActivity.this,movieImagesBackDropAndPostersArrayList);
+                            if (movieImagesBackDropAndPostersArrayList.size() > 0) {
+                                MoviePosterImagesAdapter moviePosterImagesAdapter = new MoviePosterImagesAdapter(MovieDetailActivity.this, movieImagesBackDropAndPostersArrayList);
                                 movieDetailImageRecyclerView.setAdapter(moviePosterImagesAdapter);
 
                                 movieDetailImagesLayout.setVisibility(View.VISIBLE);
-                                LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(MovieDetailActivity.this,R.anim.layout_slide_right);
+                                LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(MovieDetailActivity.this, R.anim.layout_slide_right);
                                 movieDetailImageRecyclerView.setLayoutAnimation(controller);
                                 movieDetailImageRecyclerView.scheduleLayoutAnimation();
                             }
 
-                        }else{
+                        } else {
                             Log.d("debug", "Movie Images NULL");
                             Toast.makeText(MovieDetailActivity.this, "Movie Images Not Found", Toast.LENGTH_SHORT).show();
                         }
@@ -301,18 +301,18 @@ public class MovieDetailActivity extends AppCompatActivity {
                 });
                 //Movie Video Call from API
 
-                Call<MovieVideosModel>movieVideosModelCall = retrofitService.getMovieVideosById(movie_id, api);
+                Call<MovieVideosModel> movieVideosModelCall = retrofitService.getMovieVideosById(movie_id, api);
                 movieVideosModelCall.enqueue(new Callback<MovieVideosModel>() {
                     @Override
                     public void onResponse(@NonNull Call<MovieVideosModel> call, @NonNull Response<MovieVideosModel> response) {
                         MovieVideosModel movieVideosModelResponse = response.body();
 
-                        if(movieVideosModelResponse != null){
-                            List<MovieVideosResults> movieVideosResultsList =  movieVideosModelResponse.getResults();
+                        if (movieVideosModelResponse != null) {
+                            List<MovieVideosResults> movieVideosResultsList = movieVideosModelResponse.getResults();
 
-                            if(movieVideosResultsList != null && movieVideosResultsList.size() > 0){
+                            if (movieVideosResultsList != null && movieVideosResultsList.size() > 0) {
 
-                                MovieVideosAdapter movieVideosAdapter = new MovieVideosAdapter(MovieDetailActivity.this,movieVideosResultsList);
+                                MovieVideosAdapter movieVideosAdapter = new MovieVideosAdapter(MovieDetailActivity.this, movieVideosResultsList);
                                 movieDetailVideoRecyclerView.setAdapter(movieVideosAdapter);
 
                                 movieDetailVideoLayout.setVisibility(View.VISIBLE);
@@ -321,20 +321,20 @@ public class MovieDetailActivity extends AppCompatActivity {
                                 movieDetailVideoRecyclerView.setLayoutAnimation(controller);
                                 movieDetailVideoRecyclerView.scheduleLayoutAnimation();
 
-                            }else{
+                            } else {
                                 movieDetailVideoLayout.setVisibility(View.GONE);
                                 Toast.makeText(MovieDetailActivity.this, "Video not found", Toast.LENGTH_SHORT).show();
                             }
 
 
-                        }else{
+                        } else {
                             Toast.makeText(MovieDetailActivity.this, "Video not found", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<MovieVideosModel> call, @NonNull Throwable t) {
-                        Log.d("debug","Movie Videos Response Fail");
+                        Log.d("debug", "Movie Videos Response Fail");
                     }
                 });
 
@@ -483,7 +483,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         if (productCompanyList != null && productCompanyList.size() > 0) {
 
-            MovieProductionCompanyAdapter movieProductionCompanyAdapter = new MovieProductionCompanyAdapter(MovieDetailActivity.this,productCompanyList);
+            MovieProductionCompanyAdapter movieProductionCompanyAdapter = new MovieProductionCompanyAdapter(MovieDetailActivity.this, productCompanyList);
             movieDetailProductionCompanyRecyclerView.setAdapter(movieProductionCompanyAdapter);
 
             movieDetailProductionCompanyLayout.setVisibility(View.VISIBLE);

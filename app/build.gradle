@@ -26,10 +26,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    buildTypes.each{
-        it.buildConfigField ("String","THE_MOVIE_DB_API_KEY",TheMovieDBApiKey)
-        it.buildConfigField ("String","YOUR_GOOGLE_CLOUD_API_KEY",GoogleCloudApiKey)
-    }
+//    buildTypes.each{
+//        it.buildConfigField ("String","THE_MOVIE_DB_API_KEY",TheMovieDBApiKey)
+//        it.buildConfigField ("String","YOUR_GOOGLE_CLOUD_API_KEY",GoogleCloudApiKey)
+//    }
 }
 
 dependencies {

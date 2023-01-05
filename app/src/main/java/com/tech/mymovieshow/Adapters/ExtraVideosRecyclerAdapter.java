@@ -1,8 +1,8 @@
 package com.tech.mymovieshow.Adapters;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -22,24 +20,25 @@ import com.tech.mymovieshow.VideoPlayActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieVideosAdapter extends RecyclerView.Adapter<MovieVideosAdapter.ViewHolder> {
+public class ExtraVideosRecyclerAdapter extends RecyclerView.Adapter<ExtraVideosRecyclerAdapter.ViewHolder> {
+
     Activity activity;
     List<MovieVideosResults> movieVideosResultsList;
 
-    public MovieVideosAdapter(Activity activity, List<MovieVideosResults> movieVideosResultsList) {
+    public ExtraVideosRecyclerAdapter(Activity activity, List<MovieVideosResults> movieVideosResultsList) {
         this.activity = activity;
         this.movieVideosResultsList = movieVideosResultsList;
     }
 
     @NonNull
     @Override
-    public MovieVideosAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(activity).inflate(R.layout.video_layout, parent, false);
-        return new ViewHolder(view);
+    public ExtraVideosRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+       View view = LayoutInflater.from(activity).inflate(R.layout.video_layout, parent,false);
+       return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieVideosAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ExtraVideosRecyclerAdapter.ViewHolder holder, int position) {
 
         MovieVideosResults movieVideosResults = movieVideosResultsList.get(position);
 
@@ -51,16 +50,16 @@ public class MovieVideosAdapter extends RecyclerView.Adapter<MovieVideosAdapter.
 
 
         if(movieVideosResults.getName() != null)
-        holder.videoTitle.setText(movieVideosResults.getName());
+            holder.videoTitle.setText(movieVideosResults.getName());
 
         if(movieVideosResults.getSite() != null)
-        holder.videoSite.setText(movieVideosResults.getSite());
+            holder.videoSite.setText(movieVideosResults.getSite());
 
         if(movieVideosResults.getType() != null)
-        holder.videoType.setText(movieVideosResults.getType());
+            holder.videoType.setText(movieVideosResults.getType());
 
         if(movieVideosResults.getSize() != null)
-        holder.videoQuality.setText(String.valueOf(movieVideosResults.getSize()));
+            holder.videoQuality.setText(String.valueOf(movieVideosResults.getSize()));
 
         //on itemView Click
 
@@ -68,8 +67,8 @@ public class MovieVideosAdapter extends RecyclerView.Adapter<MovieVideosAdapter.
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(activity,VideoPlayActivity.class);
-                ArrayList<MovieVideosResults>movieVideosResultsArrayList = new ArrayList<>(movieVideosResultsList);
+                Intent intent = new Intent(activity, VideoPlayActivity.class);
+                ArrayList<MovieVideosResults> movieVideosResultsArrayList = new ArrayList<>(movieVideosResultsList);
 
                 //set Animation open the video
 //                ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity,holder.youTubeThumbnail,
@@ -90,7 +89,7 @@ public class MovieVideosAdapter extends RecyclerView.Adapter<MovieVideosAdapter.
         return movieVideosResultsList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder{
 
         private final AppCompatTextView videoTitle;
         private final AppCompatImageView youTubeThumbnail;

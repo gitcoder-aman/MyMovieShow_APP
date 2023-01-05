@@ -25,7 +25,7 @@ public class FullScreenHelper {
         |View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
-    private void enterFullScreen(){
+    public void enterFullScreen(){
         View view = activity.getWindow().getDecorView();
         hideSystemUi(view);
 
@@ -35,7 +35,7 @@ public class FullScreenHelper {
         }
     }
 
-    private void exitFullScreen(){
+    public void exitFullScreen(){
         View view = activity.getWindow().getDecorView();
         showSystemUi(view);
 
